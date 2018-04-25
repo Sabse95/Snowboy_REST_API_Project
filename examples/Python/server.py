@@ -4,28 +4,26 @@ import RPi.GPIO as GPIO
 import audio_rec
 import audio_out
 import training_service
+import led_test
 
-LED =24
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-GPIO.setup(LED, GPIO.OUT , initial= GPIO.LOW)
+
 
 app = Flask(__name__)
 
 @app.route('/api/led/on')
 def led_on():
-	GPIO.output(LED, GPIO.HIGH)
-	return jsonify(led= GPIO.input(LED))
+	led_test.main(GPIO.HIGH)
+	return jsonify("LED ON")
 	
 @app.route('/api/led/off')
 def led_off():
-	GPIO.output(LED, GPIO.LOW)
-	return jsonify(led= GPIO.input(LED))
+	led_test.main(GPIO.LOW)
+	return jsonify("LED OFF")
 	
-@app.route('/api/led/toogle')
-def led_toggle():
-	GPIO.output(LED, not GPIO.input(LED))
-	return jsonify(led= GPIO.input(LED))
+#@app.route('/api/led/toogle')
+#def led_toggle():
+	#GPIO.output(LED, not GPIO.input(LED))
+	#return jsonify("alle Party")
 	
 @app.route('/api/add/voicesample/<commandName>')
 def sample_record(commandName):
@@ -34,7 +32,7 @@ def sample_record(commandName):
 	
 @app.route('/api/play/voicesample/<sampleName>')
 def sample_play(sampleName):
-	audio_out.main(commandName)
+	audio_out.main(sampleName)
 	return jsonify("Word play")
 	
 @app.route('/api/add/hotword/<sampleName1>/<sampleName2>/<sampleName3>/<hotwordName>/<actionTaken>')
