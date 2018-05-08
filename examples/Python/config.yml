@@ -1,25 +1,17 @@
 action:
-- name: test
+- name: Fernseher_lauter
   actions:
-  - keyword: resources/test.pmdl
-  - endpoint: http://192.168.8.131:5000/api/led/on
-- name: test
+  - keyword: resources/Fernseher_lauter.pmdl
+  - endpoint: http://192.168.8.131:5000/api/function/fernseher/lauter
+- name: Fernseher_leiser
   actions:
-  - keyword: resourcestest.pmdl
-  - endpoint: blabla
-- name: snowboy
+  - keyword: resources/Fernseher_leiser.pmdl
+  - endpoint: http://192.168.8.131:5000/api/function/fernseher/leiser
+- name: Fernseher_einschalten
   actions:
-  - keyword: resourcessnowboy.pmdl
-  - endpoint: snowboy
-- name: snowboy
+  - keyword: resources/Fernseher_einschalten.pmdl
+  - endpoint: http://192.168.8.131:5000/api/function/fernseher/on
+- name: Fernseher_ausschalten
   actions:
-  - keyword: resourcessnowboy.pmdl
-  - endpoint: http:asshole
-- name: snowboy
-  actions:
-  - keyword: resourcessnowboy.pmdl
-  - endpoint: http:sepp
-- name: snowboy
-  actions:
-  - keyword: resourcessnowboy.pmdl
-  - endpoint: http:sepp
+  - keyword: resources/Fernseher_ausschalten.pmdl
+  - endpoint: http://192.168.8.131:5000/api/function/fernseher/off

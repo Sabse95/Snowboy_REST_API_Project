@@ -6,6 +6,7 @@ import audio_out
 import training_service
 import led_test
 import config
+import snowboy_test
 
 Word1=17
 Word2=27
@@ -66,6 +67,11 @@ def light_off():
 	led_test.led(L_on, GPIO.LOW)
 	return jsonify("Licht OFF")
 
+@app.route('/api/get/config')
+def config():
+
+	return jsonify("Config")
+
 @app.route('/api/record/voicesample/<commandName>')
 def sample_record(commandName):
 	audio_rec.main(commandName)
@@ -76,15 +82,15 @@ def sample_play(sampleName):
 	audio_out.main(sampleName)
 	return jsonify("Word play")
 	
-@app.route('/api/add/hotword/<sampleName1>/<sampleName2>/<sampleName3>/<hotwordName>/<actionTaken>')
+@app.route('/api/add/hotword/<sampleName1>/<sampleName2>/<sampleName3>/<hotwordName>/<path:actionTaken>')
 def create_hotword(sampleName1,sampleName2,sampleName3,hotwordName, actionTaken):
 	training_service.main(sampleName1,sampleName2,sampleName3,hotwordName)
 	config.main(hotwordName, actionTaken)
 	return jsonify("Hotword create!")
 	
-@app.route('/api/detection/start')
-def listen_start():
-	
+@app.route('/api/detection/start/<command>')
+def listen_start(command):
+	snowboy_test.main(command)
 	return jsonify("Detection started")
 	
 @app.route('/api/detection/terminate')
