@@ -5,6 +5,7 @@ import audio_rec
 import audio_out
 import training_service
 import led_test
+import config
 
 Word1=17
 Word2=27
@@ -78,6 +79,7 @@ def sample_play(sampleName):
 @app.route('/api/add/hotword/<sampleName1>/<sampleName2>/<sampleName3>/<hotwordName>/<actionTaken>')
 def create_hotword(sampleName1,sampleName2,sampleName3,hotwordName, actionTaken):
 	training_service.main(sampleName1,sampleName2,sampleName3,hotwordName)
+	config.main(hotwordName, actionTaken)
 	return jsonify("Hotword create!")
 	
 @app.route('/api/detection/start')

@@ -1,0 +1,25 @@
+action:
+- name: test
+  actions:
+  - keyword: resources/test.pmdl
+  - endpoint: http://192.168.8.131:5000/api/led/on
+- name: test
+  actions:
+  - keyword: resourcestest.pmdl
+  - endpoint: blabla
+- name: snowboy
+  actions:
+  - keyword: resourcessnowboy.pmdl
+  - endpoint: snowboy
+- name: snowboy
+  actions:
+  - keyword: resourcessnowboy.pmdl
+  - endpoint: http:asshole
+- name: snowboy
+  actions:
+  - keyword: resourcessnowboy.pmdl
+  - endpoint: http:sepp
+- name: snowboy
+  actions:
+  - keyword: resourcessnowboy.pmdl
+  - endpoint: http:sepp
