@@ -45,8 +45,10 @@ def main(arg1):
 	GPIO.output(F_leiser,arg1)
 	GPIO.output(Reserve, arg1)
 
-
+def led(arg1, arg2):
+	GPIO.output(arg1,arg2)
 
 
 if __name__ == "__main__":
     main(sys.argv[1])
+    led(sys.argv[1], sys.argv[2])

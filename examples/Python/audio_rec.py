@@ -2,6 +2,12 @@
 import pyaudio
 import wave
 import sys
+import RPi.GPIO as GPIO
+Word1 = 17
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(Word1, GPIO.OUT , initial= GPIO.LOW)
 
 def main(arg1):
 
@@ -21,6 +27,7 @@ def main(arg1):
 					frames_per_buffer=CHUNK)
 
 	print("* recording")
+	GPIO.output(Word1 ,GPIO.HIGH)
 
 	frames = []
 
@@ -29,6 +36,7 @@ def main(arg1):
 		frames.append(data)
 
 	print("* done recording")
+	GPIO.output(Word1 ,GPIO.LOW)
 
 	stream.stop_stream()
 	stream.close()

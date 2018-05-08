@@ -3,6 +3,12 @@
 import pyaudio
 import wave
 import sys
+import RPi.GPIO as GPIO
+Reserve=21
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(Reserve, GPIO.OUT , initial= GPIO.LOW)
 
 
 def main(arg1):
@@ -18,11 +24,12 @@ def main(arg1):
 					output=True)
 
 	data = wf.readframes(CHUNK)
-
+	GPIO.output(Reserve ,GPIO.HIGH)
 	while data != '':
 		stream.write(data)
 		data = wf.readframes(CHUNK)
 
+	GPIO.output(Reserve ,GPIO.LOW)
 	stream.stop_stream()
 	stream.close()
 

@@ -6,7 +6,18 @@ import audio_out
 import training_service
 import led_test
 
-
+Word1=17
+Word2=27
+Word3=22
+Listen=4
+Wohnzimmer=23
+Licht=24
+Fernseher=25
+L_on=6
+F_on=5
+F_lauter=26
+F_leiser=16
+Reserve=21
 
 app = Flask(__name__)
 
@@ -19,13 +30,42 @@ def led_on():
 def led_off():
 	led_test.main(GPIO.LOW)
 	return jsonify("LED OFF")
+
+@app.route('/api/function/fernseher/on')
+def fernseher_on():
+	led_test.led(F_on, GPIO.HIGH)
+	return jsonify("Fernseher ON")
 	
-#@app.route('/api/led/toogle')
-#def led_toggle():
-	#GPIO.output(LED, not GPIO.input(LED))
-	#return jsonify("alle Party")
+@app.route('/api/function/fernseher/off')
+def fernseher_off():
+	led_test.led(F_on, GPIO.LOW)
+	led_test.led(F_lauter, GPIO.LOW)
+	led_test.led(F_leiser, GPIO.LOW)
+	return jsonify("Fernseher OFF")
+
+@app.route('/api/function/fernseher/lauter')
+def fernseher_lauter():
+	led_test.led(F_lauter, GPIO.HIGH)
+	led_test.led(F_leiser, GPIO.LOW)
+	return jsonify("Fernseher Lauter")
 	
-@app.route('/api/add/voicesample/<commandName>')
+@app.route('/api/function/fernseher/leiser')
+def fernseher_leiser():
+	led_test.led(F_leiser, GPIO.HIGH)
+	led_test.led(F_lauter, GPIO.LOW)
+	return jsonify("Fernseher Leiser")
+
+@app.route('/api/function/licht/on')
+def light_on():
+	led_test.led(L_on, GPIO.HIGH)
+	return jsonify("Licht ON")
+	
+@app.route('/api/function/licht/off')
+def light_off():
+	led_test.led(L_on, GPIO.LOW)
+	return jsonify("Licht OFF")
+
+@app.route('/api/record/voicesample/<commandName>')
 def sample_record(commandName):
 	audio_rec.main(commandName)
 	return jsonify("Word ok")
@@ -40,5 +80,17 @@ def create_hotword(sampleName1,sampleName2,sampleName3,hotwordName, actionTaken)
 	training_service.main(sampleName1,sampleName2,sampleName3,hotwordName)
 	return jsonify("Hotword create!")
 	
+@app.route('/api/detection/start')
+def listen_start():
+	
+	return jsonify("Detection started")
+	
+@app.route('/api/detection/terminate')
+def listen_terminate():
+	
+	return jsonify("Detection terminated")
+	
 if __name__ == "__main__":
+	led_test.main(GPIO.LOW)
 	app.run(debug=True,host="0.0.0.0")
+	
