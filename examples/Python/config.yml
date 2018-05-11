@@ -3,15 +3,11 @@ action:
   actions:
   - keyword: resources/Fernseher_lauter.pmdl
   - endpoint: http://192.168.8.131:5000/api/function/fernseher/lauter
+  - httpmethod: GET
+  - bodyData: xxx
 - name: Fernseher_leiser
   actions:
   - keyword: resources/Fernseher_leiser.pmdl
   - endpoint: http://192.168.8.131:5000/api/function/fernseher/leiser
-- name: Fernseher_einschalten
-  actions:
-  - keyword: resources/Fernseher_einschalten.pmdl
-  - endpoint: http://192.168.8.131:5000/api/function/fernseher/on
-- name: Fernseher_ausschalten
-  actions:
-  - keyword: resources/Fernseher_ausschalten.pmdl
-  - endpoint: http://192.168.8.131:5000/api/function/fernseher/off
+  - httpmethod: GET
+  - bodyData: xxx

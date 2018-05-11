@@ -36,7 +36,6 @@ def main(arg1):
 	detector = snowboydecoder.HotwordDetector(models, sensitivity=sensitivity)
 	callbacks = [lambda: snowboydecoder.play_audio_file(snowboydecoder.DETECT_DING)]
 	print('Listening... Press Ctrl+C to exit')
-
 	# main loop
 	# make sure you have the same numbers of callbacks and models
 	detector.start(detected_callback=callbacks,
@@ -48,9 +47,8 @@ def main(arg1):
 				
 
 if __name__ == "__main__":
-    
     # capture SIGINT signal, e.g., Ctrl+C
-	signal.signal(signal.SIGINT, signal_handler)
+	#signal.signal(signal.SIGINT, signal_handler)
     main(sys.argv[1])
 
 

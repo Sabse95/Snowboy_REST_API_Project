@@ -6,7 +6,7 @@ import audio_out
 import training_service
 import led_test
 import config
-import snowboy_test
+#import snowboy_test
 
 Word1=17
 Word2=27
@@ -81,16 +81,32 @@ def sample_record(commandName):
 def sample_play(sampleName):
 	audio_out.main(sampleName)
 	return jsonify("Word play")
-	
+
 @app.route('/api/add/hotword/<sampleName1>/<sampleName2>/<sampleName3>/<hotwordName>/<path:actionTaken>')
-def create_hotword(sampleName1,sampleName2,sampleName3,hotwordName, actionTaken):
+def create_hotword_1(sampleName1,sampleName2,sampleName3,hotwordName, actionTaken):
 	training_service.main(sampleName1,sampleName2,sampleName3,hotwordName)
-	config.main(hotwordName, actionTaken)
+	httpmethode = "GET"
+	bodyData = "NULL"
+	config.insert(hotwordName, actionTaken, httpmethode, bodyData)
+	return jsonify("Hotword create!")
+
+@app.route('/api/add/hotword/<sampleName1>/<sampleName2>/<sampleName3>/<hotwordName>/<path:actionTaken>/<httpmethode>')
+def create_hotword_2(sampleName1,sampleName2,sampleName3,hotwordName, actionTaken, httpmethode):
+	training_service.main(sampleName1,sampleName2,sampleName3,hotwordName)
+	bodyData = "NULL"
+	config.insert(hotwordName, actionTaken, httpmethode, bodyData)
 	return jsonify("Hotword create!")
 	
-@app.route('/api/detection/start/<command>')
-def listen_start(command):
-	snowboy_test.main(command)
+@app.route('/api/add/hotword/<sampleName1>/<sampleName2>/<sampleName3>/<hotwordName>/<path:actionTaken>/<httpmethode>/<bodyData>')
+def create_hotword_3(sampleName1,sampleName2,sampleName3,hotwordName, actionTaken, httpmethode, bodyData):
+	training_service.main(sampleName1,sampleName2,sampleName3,hotwordName)
+	config.insert(hotwordName, actionTaken, httpmethode, bodyData)
+	return jsonify("Hotword create!")
+	
+	
+@app.route('/api/detection/start')
+def listen_start():
+	#snowboy_test.main()
 	return jsonify("Detection started")
 	
 @app.route('/api/detection/terminate')
