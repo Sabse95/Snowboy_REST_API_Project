@@ -6,7 +6,9 @@ import audio_out
 import training_service
 import led_test
 import configuration
+import demo_threaded
 #import snowboy_test
+#import demo
 
 Word1=17
 Word2=27
@@ -107,12 +109,12 @@ def config_delete(hotwordName):
 	
 @app.route('/api/detection/start')
 def listen_start():
-	#snowboy_test.main()
+	demo_threaded.main("resources/snowboy.umdl")
 	return jsonify("Detection started")
 	
 @app.route('/api/detection/terminate')
 def listen_terminate():
-	
+	snowboy_test.terminate()
 	return jsonify("Detection terminated")
 	
 if __name__ == "__main__":

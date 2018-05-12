@@ -1,4 +1,5 @@
 import snowboythreaded
+import snowboydecoder
 import sys
 import signal
 import yaml

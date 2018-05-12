@@ -1,10 +1,10 @@
 import snowboydecoder
+import snowboythreaded
 import sys
 import signal
-import requests
+import yaml
+import time
 
-
-# Demo code for listening to two hotwords at the same time
 interrupted = False
 
 
@@ -17,40 +17,41 @@ def interrupt_callback():
     global interrupted
     return interrupted
 
-def recognised():
-	endpoint = "http://192.168.8.131:5000/api/led/on"
-	response = requests.get(endpoint)
-	if response.ok:
-		print "Started Light"
-	else:
-		print "Request failed."
-		print response.text
+def recognized():
+	print "erkannt"
+#if len(sys.argv) == 1:
+    #print("Error: need to specify model name")
+    #print("Usage: python demo.py your.model")
+    #sys.exit(-1)
+
+def terminate():
+	threaded_detector.pause_recog()
 
 def main(arg1):
 	
 	models = arg1
-	callbacks= [recognised]
-	
+	callbacks = [recognized]
 
-	sensitivity = [0.5]*len(models)
-	detector = snowboydecoder.HotwordDetector(models, sensitivity=sensitivity)
-	callbacks = [lambda: snowboydecoder.play_audio_file(snowboydecoder.DETECT_DING)]
+	# capture SIGINT signal, e.g., Ctrl+C
+	#signal.signal(signal.SIGINT, signal_handler)
+	# Initialize ThreadedDetector object and start the detection thread
+	threaded_detector = snowboythreaded.ThreadedDetector(models, sensitivity=0.5)
+	threaded_detector.start()
 	print('Listening... Press Ctrl+C to exit')
 	# main loop
-	# make sure you have the same numbers of callbacks and models
-	detector.start(detected_callback=callbacks,
-				   interrupt_check=interrupt_callback,
-				   sleep_time=0.03)
+	#detector.start(detected_callback=snowboydecoder.play_audio_file,
+				   #interrupt_check=interrupt_callback,
+				   #sleep_time=0.03)
+	threaded_detector.start_recog(detected_callback= callbacks, sleep_time=0.03)
+	print "Listen"
+	# Let audio initialization happen before requesting input
+	time.sleep(1)
 
-	detector.terminate()
+	threaded_detector.terminate()
 
-				
 
 if __name__ == "__main__":
-    # capture SIGINT signal, e.g., Ctrl+C
-	#signal.signal(signal.SIGINT, signal_handler)
-    main(sys.argv[1])
-
+	main(sys.argv[1])
 
 
 
