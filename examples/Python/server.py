@@ -85,24 +85,26 @@ def sample_play(sampleName):
 @app.route('/api/add/hotword/<sampleName1>/<sampleName2>/<sampleName3>/<hotwordName>/<path:actionTaken>')
 def create_hotword_1(sampleName1,sampleName2,sampleName3,hotwordName, actionTaken):
 	training_service.main(sampleName1,sampleName2,sampleName3,hotwordName)
-	httpmethode = "GET"
-	bodyData = "NULL"
-	config.insert(hotwordName, actionTaken, httpmethode, bodyData)
+	#config.insert1(hotwordName, actionTaken)
 	return jsonify("Hotword create!")
 
-@app.route('/api/add/hotword/<sampleName1>/<sampleName2>/<sampleName3>/<hotwordName>/<path:actionTaken>/<httpmethode>')
-def create_hotword_2(sampleName1,sampleName2,sampleName3,hotwordName, actionTaken, httpmethode):
-	training_service.main(sampleName1,sampleName2,sampleName3,hotwordName)
-	bodyData = "NULL"
-	config.insert(hotwordName, actionTaken, httpmethode, bodyData)
-	return jsonify("Hotword create!")
+#@app.route('/api/add/hotword/<sampleName1>/<sampleName2>/<sampleName3>/<hotwordName>/<path:actionTaken>/<httpmethode>')
+#def create_hotword_2(sampleName1,sampleName2,sampleName3,hotwordName, actionTaken, httpmethode):
+	#training_service.main(sampleName1,sampleName2,sampleName3,hotwordName)
+	#bodyData = "NULL"
+	#config.main(hotwordName, actionTaken, httpmethode, bodyData)
+	#return jsonify("Hotword create!")
 	
-@app.route('/api/add/hotword/<sampleName1>/<sampleName2>/<sampleName3>/<hotwordName>/<path:actionTaken>/<httpmethode>/<bodyData>')
-def create_hotword_3(sampleName1,sampleName2,sampleName3,hotwordName, actionTaken, httpmethode, bodyData):
-	training_service.main(sampleName1,sampleName2,sampleName3,hotwordName)
-	config.insert(hotwordName, actionTaken, httpmethode, bodyData)
-	return jsonify("Hotword create!")
-	
+#@app.route('/api/add/hotword/<sampleName1>/<sampleName2>/<sampleName3>/<hotwordName>/<path:actionTaken>/<httpmethode>/<bodyData>')
+#def create_hotword_3(sampleName1,sampleName2,sampleName3,hotwordName, actionTaken, httpmethode, bodyData):
+	#training_service.main(sampleName1,sampleName2,sampleName3,hotwordName)
+	#config.main(hotwordName, actionTaken, httpmethode, bodyData)
+	#return jsonify("Hotword create!")
+
+@app.route('/api/delete/hotword/<hotwordName>')
+def config_delete(hotwordName):
+	config.delete(hotwordName)
+	return jsonify("Hotword deleted")	
 	
 @app.route('/api/detection/start')
 def listen_start():
