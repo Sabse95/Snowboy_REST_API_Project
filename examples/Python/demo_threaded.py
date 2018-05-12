@@ -5,8 +5,13 @@ import time
 
 stop_program = False
 
+global threaded_detector
+
 # This a demo that shows running Snowboy in another thread
 
+def terminate():
+	global threaded_detector
+	threaded_detector.pause_recog()
 
 def signal_handler(signal, frame):
     global stop_program
@@ -19,8 +24,9 @@ def signal_handler(signal, frame):
     #sys.exit(-1)
 
 def main(arg1):
+	
+	global threaded_detector
 	model = arg1
-
 	# capture SIGINT signal, e.g., Ctrl+C
 	#signal.signal(signal.SIGINT, signal_handler)
 
@@ -49,3 +55,7 @@ def main(arg1):
 
 if __name__ == "__main__":
 	main(sys.argv[1])
+	terminate()
+	# capture SIGINT signal, e.g., Ctrl+C
+	signal.signal(signal.SIGINT, signal_handler)
+

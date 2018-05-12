@@ -114,7 +114,7 @@ def listen_start():
 	
 @app.route('/api/detection/terminate')
 def listen_terminate():
-	snowboy_test.terminate()
+	demo_threaded.terminate()
 	return jsonify("Detection terminated")
 	
 if __name__ == "__main__":
