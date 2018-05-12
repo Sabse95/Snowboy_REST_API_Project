@@ -5,15 +5,27 @@ action:
   - endpoint: http://192.168.8.131:5000/api/function/fernseher/lauter
   - httpmethod: GET
   - bodyData: x
-- name: Fernseher_leiser
-  actions:
-  - keyword: resources/Fernseher_leiser.pmdl
-  - endpoint: http://192.168.8.131:5000/api/function/fernseher/leiser
-  - httpmethod: GET
-  - bodyData: x
 - name: Fernseher_aus
   actions:
   - keyword: resources/Fernseher_aus.pmdl
   - endpoint: blabla
+  - httpmethod: GET
+  - bodyData: x
+- name: test
+  actions:
+  - keyword: resources/test.pmdl
+  - endpoint: http://192.168.8.131:5000/api/led
+  - httpmethod: on
+  - bodyData: POST
+- name: test
+  actions:
+  - keyword: resources/test.pmdl
+  - endpoint: http://192.168.8.131:5000/api/led/on
+  - httpmethod: POST
+  - bodyData: x
+- name: test
+  actions:
+  - keyword: resources/test.pmdl
+  - endpoint: http://192.168.8.131:5000/api/led/on
   - httpmethod: GET
   - bodyData: x
