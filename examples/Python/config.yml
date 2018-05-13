@@ -8,24 +8,6 @@ action:
 - name: Fernseher_aus
   actions:
   - keyword: resources/Fernseher_aus.pmdl
-  - endpoint: blabla
-  - httpmethod: GET
-  - bodyData: x
-- name: test
-  actions:
-  - keyword: resources/test.pmdl
-  - endpoint: http://192.168.8.131:5000/api/led
-  - httpmethod: on
-  - bodyData: POST
-- name: test
-  actions:
-  - keyword: resources/test.pmdl
-  - endpoint: http://192.168.8.131:5000/api/led/on
-  - httpmethod: POST
-  - bodyData: x
-- name: test
-  actions:
-  - keyword: resources/test.pmdl
-  - endpoint: http://192.168.8.131:5000/api/led/on
+  - endpoint: http://192.168.8.131:5000/api/function/fernseher/aus
   - httpmethod: GET
   - bodyData: x
