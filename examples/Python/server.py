@@ -9,6 +9,7 @@ import configuration
 import demo_threaded
 #import snowboy_test
 #import demo
+import subprocess as sp
 
 Word1=17
 Word2=27
@@ -22,6 +23,8 @@ F_on=5
 F_lauter=26
 F_leiser=16
 Reserve=21
+execution_status = 0
+extProc = 0
 
 app = Flask(__name__)
 
@@ -102,20 +105,37 @@ def create_hotword_3(sampleName1,sampleName2,sampleName3,hotwordName, actionTake
 	configuration.insert3(hotwordName, actionTaken, httpmethode, bodyData)
 	return jsonify("Hotword create!")
 
-@app.route('/api/delete/hotword/<hotwordName>')
+@app.route('/api/delete/config/hotword/<hotwordName>')
 def config_delete(hotwordName):
 	configuration.delete(hotwordName)
 	return jsonify("Hotword deleted")	
 	
 @app.route('/api/detection/start')
-def listen_start():
-	demo_threaded.main("resources/snowboy.umdl")
-	return jsonify("Detection started")
-	
+def detection():
+	#demo_threaded.main("resources/snowboy.umdl")
+	global execution_status
+	global extProc
+	if execution_status == 0:
+		extProc = sp.Popen(['python','demo.py', 'resources/snowboy.umdl']) # runs myPyScript.py 
+		status = sp.Popen.poll(extProc) # status should be 'None'
+		execution_status = 1
+		return jsonify("Detection started")
+	else:
+		return jsonify("Detection already started")
+
+
 @app.route('/api/detection/terminate')
 def listen_terminate():
-	demo_threaded.terminate()
-	return jsonify("Detection terminated")
+	global execution_status
+	global extProc
+	if execution_status == 1:
+		sp.Popen.terminate(extProc) # closes the process
+		status = sp.Popen.poll(extProc) # status should now be something other than 'None' ('1' in my testing)
+		execution_status = 0
+		return jsonify("Detection terminated")
+	else:
+		return jsonify("No Detection to terminate")
+
 	
 if __name__ == "__main__":
 	led_test.main(GPIO.LOW)

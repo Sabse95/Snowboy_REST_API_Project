@@ -7,6 +7,8 @@ import time
 import wave
 import os
 import logging
+from ctypes import *
+from contextlib import contextmanager
 
 logging.basicConfig()
 logger = logging.getLogger("snowboy")
@@ -17,6 +19,23 @@ RESOURCE_FILE = os.path.join(TOP_DIR, "resources/common.res")
 DETECT_DING = os.path.join(TOP_DIR, "resources/ding.wav")
 DETECT_DONG = os.path.join(TOP_DIR, "resources/dong.wav")
 
+def py_error_handler(filename, line, function, err, fmt):
+    pass
+
+ERROR_HANDLER_FUNC = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
+
+c_error_handler = ERROR_HANDLER_FUNC(py_error_handler)
+
+@contextmanager
+def no_alsa_error():
+    try:
+        asound = cdll.LoadLibrary('libasound.so')
+        asound.snd_lib_error_set_handler(c_error_handler)
+        yield
+        asound.snd_lib_error_set_handler(None)
+    except:
+        yield
+        pass
 
 class RingBuffer(object):
     """Ring buffer to hold audio from PortAudio"""
@@ -37,13 +56,13 @@ class RingBuffer(object):
 def play_audio_file(fname=DETECT_DING):
     """Simple callback function to play a wave file. By default it plays
     a Ding sound.
-
     :param str fname: wave file name
     :return: None
     """
     ding_wav = wave.open(fname, 'rb')
     ding_data = ding_wav.readframes(ding_wav.getnframes())
-    audio = pyaudio.PyAudio()
+    with no_alsa_error():
+        audio = pyaudio.PyAudio()
     stream_out = audio.open(
         format=audio.get_format_from_width(ding_wav.getsampwidth()),
         channels=ding_wav.getnchannels(),
@@ -60,7 +79,6 @@ class HotwordDetector(object):
     """
     Snowboy decoder to detect whether a keyword specified by `decoder_model`
     exists in a microphone input stream.
-
     :param decoder_model: decoder model file path, a string or a list of strings
     :param resource: resource file path.
     :param sensitivity: decoder sensitivity, a float of a list of floats.
@@ -68,11 +86,13 @@ class HotwordDetector(object):
                               decoder. If an empty list is provided, then the
                               default sensitivity in the model will be used.
     :param audio_gain: multiply input volume by this factor.
+    :param apply_frontend: applies the frontend processing algorithm if True.
     """
     def __init__(self, decoder_model,
                  resource=RESOURCE_FILE,
                  sensitivity=[],
-                 audio_gain=1):
+                 audio_gain=1,
+                 apply_frontend=False):
 
         def audio_callback(in_data, frame_count, time_info, status):
             self.ring_buffer.extend(in_data)
@@ -90,6 +110,7 @@ class HotwordDetector(object):
         self.detector = snowboydetect.SnowboyDetect(
             resource_filename=resource.encode(), model_str=model_str.encode())
         self.detector.SetAudioGain(audio_gain)
+        self.detector.ApplyFrontend(apply_frontend)
         self.num_hotwords = self.detector.NumHotwords()
 
         if len(decoder_model) > 1 and len(sensitivity) == 1:
@@ -104,7 +125,8 @@ class HotwordDetector(object):
 
         self.ring_buffer = RingBuffer(
             self.detector.NumChannels() * self.detector.SampleRate() * 5)
-        self.audio = pyaudio.PyAudio()
+        with no_alsa_error():
+            self.audio = pyaudio.PyAudio()
         self.stream_in = self.audio.open(
             input=True, output=False,
             format=self.audio.get_format_from_width(
@@ -128,7 +150,6 @@ class HotwordDetector(object):
         function (single model) or a list of callback functions (multiple
         models). Every loop it also calls `interrupt_check` -- if it returns
         True, then breaks from the loop and return.
-
         :param detected_callback: a function or list of functions. The number of
                                   items must match the number of models in
                                   `decoder_model`.

@@ -57,5 +57,5 @@ if __name__ == "__main__":
 	main(sys.argv[1])
 	terminate()
 	# capture SIGINT signal, e.g., Ctrl+C
-	signal.signal(signal.SIGINT, signal_handler)
+	#signal.signal(signal.SIGINT, signal_handler)
 
