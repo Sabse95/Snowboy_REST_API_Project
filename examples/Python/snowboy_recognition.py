@@ -2,7 +2,7 @@ import snowboydecoder
 import sys
 import signal
 import configuration
-import request_service
+import callbacks
 
 interrupted = False
 
@@ -16,18 +16,19 @@ def interrupt_callback():
     global interrupted
     return interrupted
 
-#if len(sys.argv) == 1:
-    #print("Error: need to specify model name")
-    #print("Usage: python demo.py your.model")
-    #sys.exit(-1)
 
-def main(arg1):
-	model = arg1
-	detector = snowboydecoder.HotwordDetector(model, sensitivity=0.5)
+def main():
+	
+	models = configuration.read_hotwords()
+	callbacks = callback.anzahl_callbacks_waehlen()
+	
+	sensitivity = [0.5]*len(models)
+	detector = snowboydecoder.HotwordDetector(models, sensitivity=sensitivity)
+
 	print('Listening... Press Ctrl+C to exit')
 
 	# main loop
-	detector.start(detected_callback=snowboydecoder.play_audio_file,
+	detector.start(detected_callback=callbacks,
 				   interrupt_check=interrupt_callback,
 				   sleep_time=0.03)
 
@@ -36,4 +37,4 @@ def main(arg1):
 if __name__ == "__main__":
 	# capture SIGINT signal, e.g., Ctrl+C
 	signal.signal(signal.SIGINT, signal_handler)
-	main(sys.argv[1])
+	main()
