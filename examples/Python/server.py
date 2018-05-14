@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import jsonify
+import json
 import RPi.GPIO as GPIO
 import audio_rec
 import audio_out
@@ -78,8 +79,11 @@ def light_off():
 
 @app.route('/api/get/config')
 def config():
-
-	return jsonify("Config")
+	#anzahl = configuration.size_of_config()
+	list = configuration.name_list_create()
+	list2 = configuration.endpoint_list_create()
+	#return json.dumps(list)
+	return jsonify("gelernte Woerter:", list, "Konfigurierte Endpoints:", list2)
 
 
 @app.route('/api/record/voicesample/<commandName>')

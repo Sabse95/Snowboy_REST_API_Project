@@ -22,21 +22,6 @@ def insert1(arg1, arg2):
 	
 	ruamel.yaml.round_trip_dump(config, open(file_name, 'w'), 
 								indent=ind, block_seq_indent=bsi)
-
-def delete(arg1):
-	x = 0
-	file_name = 'config.yml'
-	from ruamel.yaml.util import load_yaml_guess_indent
-
-	config, ind, bsi = load_yaml_guess_indent(open(file_name))
-	while x < len(config['action']):
-		if (config['action'][x]['name'] == arg1):
-			del config['action'][x]
-		x=x+1
-	
-	ruamel.yaml.round_trip_dump(config, open('config.yml', 'w'), 
-							indent=ind, block_seq_indent=bsi)
-	print "delete data"
 	
 def insert2(arg1, arg2, arg3):
 	file_name = 'config.yml'
@@ -73,6 +58,21 @@ def insert3(arg1, arg2, arg3, arg4):
 	
 	ruamel.yaml.round_trip_dump(config, open(file_name, 'w'), 
 								indent=ind, block_seq_indent=bsi)
+
+def delete(arg1):
+	x = 0
+	file_name = 'config.yml'
+	from ruamel.yaml.util import load_yaml_guess_indent
+
+	config, ind, bsi = load_yaml_guess_indent(open(file_name))
+	while x < len(config['action']):
+		if (config['action'][x]['name'] == arg1):
+			del config['action'][x]
+		x=x+1
+	
+	ruamel.yaml.round_trip_dump(config, open('config.yml', 'w'), 
+							indent=ind, block_seq_indent=bsi)
+	print "delete data"
 
 def size_of_config():
 	file_name = 'config.yml'
@@ -143,6 +143,30 @@ def name_search(arg1):
 	name = config['action'][arg1]['name']
 	return name	
 
+def name_list_create():
+	file_name = 'config.yml'
+	from ruamel.yaml.util import load_yaml_guess_indent
+	config, ind, bsi = load_yaml_guess_indent(open(file_name))
+	i = 0
+	namelist=[]
+	while i < len(config['action']):
+		namelist.append((config['action'][i]['name']))
+		i = i + 1
+	#print namelist
+	return namelist
+
+def endpoint_list_create():
+	file_name = 'config.yml'
+	from ruamel.yaml.util import load_yaml_guess_indent
+	config, ind, bsi = load_yaml_guess_indent(open(file_name))
+	i = 0
+	endpointlist=[]
+	while i < len(config['action']):
+		endpointlist.append((config['action'][i]['actions'][1]['endpoint']))
+		i = i + 1
+	#print namelist
+	return endpointlist
+
 if __name__ == "__main__":
 	insert1(sys.argv[1], sys.argv[2])
 	delete(sys.arg[1])
@@ -154,3 +178,4 @@ if __name__ == "__main__":
 	read_httpmethod(sys.argv[1])
 	read_bodyData(sys.argv[1])
 	name_search(sy.argv[1])
+	name_list_create()

@@ -1,6 +1,7 @@
 import requests
 import sys
 
+#handles get and post requests
 
 def get_request(arg1):
 	URL = arg1
