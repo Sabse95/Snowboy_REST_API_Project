@@ -3,8 +3,9 @@ import ruamel.yaml
 import sys
 from copy import deepcopy
 
+#configuration handles all operations off with the config.yml file
 
-def main(arg1, arg2):
+def insert1(arg1, arg2):
 	file_name = 'config.yml'
 	from ruamel.yaml.util import load_yaml_guess_indent
 		
@@ -136,11 +137,14 @@ def read_bodyData(arg1):
 	return bodyData
 
 def name_search(arg1):
+	file_name = 'config.yml'
+	from ruamel.yaml.util import load_yaml_guess_indent
+	config, ind, bsi = load_yaml_guess_indent(open(file_name))
 	name = config['action'][arg1]['name']
 	return name	
 
 if __name__ == "__main__":
-	main(sys.argv[1], sys.argv[2])
+	insert1(sys.argv[1], sys.argv[2])
 	delete(sys.arg[1])
 	insert2(sys.argv[1], sys.argv[2], sys.argv[3])
 	insert3(sys.argv[1],sys.argv[2], sys.argv[3], sys.argv[4])

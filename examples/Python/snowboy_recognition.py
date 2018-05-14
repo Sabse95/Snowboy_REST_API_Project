@@ -2,7 +2,7 @@ import snowboydecoder
 import sys
 import signal
 import configuration
-import callbacks
+import callback_service
 
 interrupted = False
 
@@ -18,9 +18,11 @@ def interrupt_callback():
 
 
 def main():
+	models = 0
+	callbacks = 0
 	
 	models = configuration.read_hotwords()
-	callbacks = callback.anzahl_callbacks_waehlen()
+	callbacks = callback_service.anzahl_callbacks_waehlen()
 	
 	sensitivity = [0.5]*len(models)
 	detector = snowboydecoder.HotwordDetector(models, sensitivity=sensitivity)

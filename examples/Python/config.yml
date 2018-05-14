@@ -1,13 +1,19 @@
 action:
 - name: Fernseher_lauter
   actions:
-  - keyword: resources/Fernseher_lauter.pmdl
+  - keyword: resources/snowboy.umdl
   - endpoint: http://192.168.8.131:5000/api/function/fernseher/lauter
   - httpmethod: GET
   - bodyData: x
-- name: Fernseher_aus
+- name: Fernseher
   actions:
-  - keyword: resources/Fernseher_aus.pmdl
-  - endpoint: http://192.168.8.131:5000/api/function/fernseher/aus
+  - keyword: resources/Fernseher.pmdl
+  - endpoint: http://192.168.8.131:5000/api/function/fernseher/ein
+  - httpmethod: GET
+  - bodyData: x
+- name: Fernseher_leiser
+  actions:
+  - keyword: resources/Fernseher_leiser.pmdl
+  - endpoint: http://192.168.8.131:5000/api/function/fernseher/leiser
   - httpmethod: GET
   - bodyData: x

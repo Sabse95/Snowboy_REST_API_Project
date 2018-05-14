@@ -6,9 +6,6 @@ import audio_out
 import training_service
 import led_test
 import configuration
-#import demo_threaded
-#import snowboy_test
-#import demo
 import subprocess as sp
 
 Word1=17
@@ -100,7 +97,7 @@ def sample_play(sampleName):
 @app.route('/api/add/hotword/<sampleName1>/<sampleName2>/<sampleName3>/<hotwordName>/<path:actionTaken>')
 def create_hotword_1(sampleName1,sampleName2,sampleName3,hotwordName, actionTaken):
 	training_service.main(sampleName1,sampleName2,sampleName3,hotwordName)
-	configuration.main(hotwordName, actionTaken)
+	configuration.insert1(hotwordName, actionTaken)
 	return jsonify("Hotword create!")
 
 
@@ -131,7 +128,7 @@ def detection():
 	global extProc
 	if execution_status == 0:
 		extProc = sp.Popen(['python','snowboy_recognition.py', 'resources/snowboy.umdl']) # runs myPyScript.py 
-		status = sp.Popen.poll(extProc) # status should be 'None'
+		#status = sp.Popen.poll(extProc) # status should be 'None'
 		execution_status = 1
 		led_test.led(Listen, GPIO.HIGH)
 		return jsonify("Detection started")
@@ -145,7 +142,7 @@ def listen_terminate():
 	global extProc
 	if execution_status == 1:
 		sp.Popen.terminate(extProc) # closes the process
-		status = sp.Popen.poll(extProc) # status should now be something other than 'None' ('1' in my testing)
+		#status = sp.Popen.poll(extProc) # status should now be something other than 'None' ('1' in my testing)
 		execution_status = 0
 		led_test.led(Listen, GPIO.LOW)
 		return jsonify("Detection terminated")
