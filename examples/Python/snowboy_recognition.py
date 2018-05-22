@@ -3,8 +3,11 @@ import sys
 import signal
 import configuration
 import callback_service
+import led_test
+import RPi.GPIO as GPIO
 
 interrupted = False
+Listen=4
 
 
 def signal_handler(signal, frame):
@@ -26,7 +29,7 @@ def main():
 	
 	sensitivity = [0.5]*len(models)
 	detector = snowboydecoder.HotwordDetector(models, sensitivity=sensitivity)
-
+	led_test.led(Listen, GPIO.HIGH)
 	print('Listening... Press Ctrl+C to exit')
 
 	# main loop

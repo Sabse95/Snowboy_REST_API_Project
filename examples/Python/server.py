@@ -134,7 +134,6 @@ def detection():
 		extProc = sp.Popen(['python','snowboy_recognition.py', 'resources/snowboy.umdl']) # runs myPyScript.py 
 		#status = sp.Popen.poll(extProc) # status should be 'None'
 		execution_status = 1
-		led_test.led(Listen, GPIO.HIGH)
 		return jsonify("Detection started")
 	else:
 		return jsonify("Detection already started")
