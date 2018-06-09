@@ -1,7 +1,7 @@
 action:
 - name: Fernseher_lauter
   actions:
-  - keyword: resources/Fernseher_lauter.pumdl
+  - keyword: resources/Fernseher_lauter.pmdl
   - endpoint: http://192.168.8.131:5000/api/function/fernseher/lauter
   - httpmethod: GET
   - bodyData: x
