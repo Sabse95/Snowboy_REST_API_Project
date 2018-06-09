@@ -1,4 +1,4 @@
-"""PyAudio Example: Play a WAVE file."""
+#plays back audio
 
 import pyaudio
 import wave

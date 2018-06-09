@@ -1,7 +1,7 @@
 import requests
 import sys
 
-#handles get and post requests
+#handles get and post requests if a word is detected
 
 def get_request(arg1):
 	URL = arg1

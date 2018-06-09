@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-
+#Python module for turning on and off the LEDs on the expansion board
 
 Word1=17
 Word2=27

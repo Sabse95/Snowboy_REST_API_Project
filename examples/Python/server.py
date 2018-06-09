@@ -1,3 +1,4 @@
+#Python Module for defining the REST Interface
 from flask import Flask
 from flask import jsonify
 import json
@@ -26,18 +27,21 @@ extProc = 0
 
 app = Flask(__name__)
 
+#turns on the leds on the expansion board 
 @app.route('/api/led/on')
 def led_on():
 	led_test.main(GPIO.HIGH)
 	return jsonify("LED ON")
 	
-	
+#turns off the leds on the expansion board 
 @app.route('/api/led/off')
 def led_off():
 	led_test.main(GPIO.LOW)
 	return jsonify("LED OFF")
 
-
+########################################################################################
+# this are only Requests for testing the sending of REST requests if a word is detected
+# not necessary for configuration of the speech recognition module
 @app.route('/api/function/fernseher/on')
 def fernseher_on():
 	led_test.led(F_on, GPIO.HIGH)
@@ -75,8 +79,9 @@ def light_on():
 def light_off():
 	led_test.led(L_on, GPIO.LOW)
 	return jsonify("Licht OFF")
+############################################################################################
 
-
+#returns Hotwords and Endpoints, which are saved in the config file
 @app.route('/api/get/config')
 def config():
 	#anzahl = configuration.size_of_config()
@@ -85,46 +90,46 @@ def config():
 	#return json.dumps(list)
 	return jsonify("gelernte Woerter:", list, "Konfigurierte Endpoints:", list2)
 
-
+#recording a voice sample
 @app.route('/api/record/voicesample/<commandName>')
 def sample_record(commandName):
 	audio_rec.main(commandName)
 	return jsonify("Word ok")
 
-	
+#aplay a voice sample	
 @app.route('/api/play/voicesample/<sampleName>')
 def sample_play(sampleName):
 	audio_out.main(sampleName)
 	return jsonify("Word play")
 
-
+#create a hotword and save it to the config file 1
 @app.route('/api/add/hotword/<sampleName1>/<sampleName2>/<sampleName3>/<hotwordName>/<path:actionTaken>')
 def create_hotword_1(sampleName1,sampleName2,sampleName3,hotwordName, actionTaken):
 	training_service.main(sampleName1,sampleName2,sampleName3,hotwordName)
 	configuration.insert1(hotwordName, actionTaken)
 	return jsonify("Hotword create!")
 
-
+#create a hotword and save it to the config file 2
 @app.route('/api/add/hotword/<sampleName1>/<sampleName2>/<sampleName3>/<hotwordName>/<path:actionTaken>//<httpmethode>')
 def create_hotword_2(sampleName1,sampleName2,sampleName3,hotwordName, actionTaken, httpmethode):
 	training_service.main(sampleName1,sampleName2,sampleName3,hotwordName)
 	configuration.insert2(hotwordName, actionTaken, httpmethode)
 	return jsonify("Hotword create!")
 
-	
+#create a hotword and save it to the config file 3	
 @app.route('/api/add/hotword/<sampleName1>/<sampleName2>/<sampleName3>/<hotwordName>/<path:actionTaken>//<httpmethode>/<bodyData>')
 def create_hotword_3(sampleName1,sampleName2,sampleName3,hotwordName, actionTaken, httpmethode, bodyData):
 	training_service.main(sampleName1,sampleName2,sampleName3,hotwordName)
 	configuration.insert3(hotwordName, actionTaken, httpmethode, bodyData)
 	return jsonify("Hotword create!")
 
-
+#delete a Hotword in the configuration file
 @app.route('/api/delete/config/hotword/<hotwordName>')
 def config_delete(hotwordName):
 	configuration.delete(hotwordName)
 	return jsonify("Hotword deleted")	
 
-	
+#start the detection	
 @app.route('/api/detection/start')
 def detection():
 	#demo_threaded.main("resources/snowboy.umdl")
@@ -138,7 +143,7 @@ def detection():
 	else:
 		return jsonify("Detection already started")
 
-
+#terminate the detection
 @app.route('/api/detection/terminate')
 def listen_terminate():
 	global execution_status

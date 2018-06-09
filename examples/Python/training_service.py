@@ -1,3 +1,5 @@
+#Python module for teaching words with the Snowboy-Training-REST-API
+
 import sys
 import base64
 import requests
@@ -10,10 +12,12 @@ def get_wave(fname):
 
 def main(arg1, arg2, arg3, arg4):
 
+	#Endpoint for the REST-request to Snowboy
 	endpoint = "https://snowboy.kitt.ai/api/v1/train/"
 
 
 	############# MODIFY THE FOLLOWING #############
+	#get your Token from the Snowboy Profile Settings
 	token = "68077f151b4f7da54af8516d4e034abf77b6591a"
 	hotword_name = arg4
 	language = "dt"
@@ -45,6 +49,7 @@ def main(arg1, arg2, arg3, arg4):
 
 	response = requests.post(endpoint, json=data)
 	if response.ok:
+		#saves model to folder resources
 		with open("resources/"+arg4+".pmdl", "w") as outfile:
 			outfile.write(response.content)
 		print "Saved model to '%s'." % arg4
